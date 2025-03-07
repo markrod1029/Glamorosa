@@ -110,7 +110,9 @@ if (isset($_POST['login'])) {
                                 <i class="fas fa-eye text-muted"></i>
                             </span>
                         </div>
-
+                        <!-- <div class="d-flex justify-content-between align-items-center">
+                            <a href="forgot-password.php" class="text-decoration-none">Forgot Password?</a>
+                        </div> -->
                         <button type="submit" class="btn btn-contact" name="login">Login</button>
                     </form>
                 </div>

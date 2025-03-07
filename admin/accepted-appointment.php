@@ -34,7 +34,7 @@
                             </thead>
                             <tbody>
                                 <?php
-                                $ret = mysqli_query($con, "SELECT tbluser.FirstName,tbluser.LastName,tbluser.Email,tbluser.MobileNumber,tblbook.ID as bid,tblbook.AptNumber,tblbook.AptDate,tblbook.AptTime,tblbook.Message,tblbook.BookingDate,tblbook.Status from tblbook join tbluser on tbluser.ID=tblbook.UserID where tblbook.Status='Approved'");
+                                $ret = mysqli_query($con, "SELECT tbluser.FirstName,tbluser.LastName,tbluser.Email,tbluser.MobileNumber,tblbook.ID as bid,tblbook.AptNumber,tblbook.AptDate,tblbook.AptTimeStart,tblbook.AptTimeEnd,tblbook.Message,tblbook.BookingDate,tblbook.Status from tblbook join tbluser on tbluser.ID=tblbook.UserID where tblbook.Status='Approved'");
                                 $cnt = 1;
                                 while ($row = mysqli_fetch_array($ret)) {
 
@@ -46,7 +46,13 @@
                                         <td><?php echo $row['FirstName']; ?> <?php echo $row['LastName']; ?></td>
                                         <td><?php echo $row['MobileNumber']; ?></td>
                                         <td><?php echo $row['AptDate']; ?></td>
-                                        <td><?php echo $row['AptTime']; ?></td><?php if ($row['Status'] == "") { ?>
+
+                                        <td>
+                                            <?php
+                                            echo date("h:i A", strtotime($row['AptTimeStart'])) . " - " . date("h:i A", strtotime($row['AptTimeEnd']));
+                                            ?>
+
+                                        </td><?php if ($row['Status'] == "") { ?>
 
                                             <td class="font-w600"><?php echo "Not Updated Yet"; ?></td>
                                         <?php } else { ?>

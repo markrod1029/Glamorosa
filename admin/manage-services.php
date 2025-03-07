@@ -5,7 +5,7 @@ if(isset($_GET['delid'])) {
     $sid = intval($_GET['delid']); // Sanitize input
 
     // Check if the user is a staff member before deleting
-    $checkQuery = "SELECT role FROM tbluser WHERE id = ?";
+    $checkQuery = "SELECT role FROM tbluser WHERE ID = ?";
     $stmt = $con->prepare($checkQuery);
     $stmt->bind_param("i", $sid);
     $stmt->execute();
@@ -22,7 +22,7 @@ if(isset($_GET['delid'])) {
         $stmt->close();
 
         // Then, delete the user
-        $deleteUserQuery = "DELETE FROM tbluser WHERE id = ?";
+        $deleteUserQuery = "DELETE FROM tbluser WHERE ID = ?";
         $stmt = $con->prepare($deleteUserQuery);
         $stmt->bind_param("i", $sid);
 
@@ -39,7 +39,6 @@ if(isset($_GET['delid'])) {
     echo "<script>window.location.href='manage-services.php'</script>";
 }
 ?>
->
 
 <body class="cbp-spmenu-push">
     <div class="main-content">
@@ -70,7 +69,7 @@ if(isset($_GET['delid'])) {
                             </thead>
                             <tbody>
                                 <?php
-                                $query = "SELECT s.ID, s.ServiceName, s.Cost, s.CreationDate, 
+                                $query = "SELECT s.ID, u.ID AS uID, s.ServiceName, s.Cost, s.CreationDate, 
                                            u.FirstName, u.LastName, u.Email 
                                     FROM tblservices s
                                     INNER JOIN tbluser u ON s.user_id = u.id WHERE u.role = 'Staff'";
@@ -88,7 +87,7 @@ if(isset($_GET['delid'])) {
                                         <td><?php echo htmlspecialchars($row['CreationDate']); ?></td>
                                         <td>
                                             <a href="add-services.php?editid=<?php echo $row['ID']; ?>" class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="manage-services.php?delid=<?php echo $row['ID']; ?>" class="btn btn-danger btn-sm" onClick="return confirm('Are you sure you want to delete?')">Delete</a>
+                                            <a href="manage-services.php?delid=<?php echo $row['uID']; ?>" class="btn btn-danger btn-sm" onClick="return confirm('Are you sure you want to delete?')">Delete</a>
                                         </td>
                                     </tr>
                                 <?php

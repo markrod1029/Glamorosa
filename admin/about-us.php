@@ -1,12 +1,11 @@
 <?php
 include_once('includes/header.php');
-include_once('includes/dbconnection.php');
 
 $msg = "";
 
 if (isset($_POST['submit'])) {
     $pagetitle = mysqli_real_escape_string($con, $_POST['pagetitle']);
-    $pagedes = mysqli_real_escape_string($con, $_POST['pagedes']);
+    $pagedes = $_POST['pagedes']; // Huwag gamitin ang mysqli_real_escape_string upang hindi mawala ang HTML formatting
 
     $query = "UPDATE tblpage SET PageTitle = ?, PageDescription = ? WHERE PageType = 'aboutus'";
     $stmt = $con->prepare($query);
@@ -25,12 +24,26 @@ $ret = mysqli_query($con, "SELECT * FROM tblpage WHERE PageType = 'aboutus'");
 $row = mysqli_fetch_assoc($ret);
 ?>
 
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        tinymce.init({
+            selector: '#pagedes',
+            height: 300,
+            plugins: 'advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste code help wordcount',
+            toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | forecolor backcolor | link image media table | code fullscreen',
+            menubar: false,
+            branding: false,
+            content_css: '/tinymce/skins/ui/oxide/skin.min.css' // Siguraduhin na ito ay tama
+        });
+    });
+</script>
+
 <body class="cbp-spmenu-push">
     <div class="main-content">
         <?php include_once('includes/sidebar.php'); ?>
         <?php include_once('includes/menubar.php'); ?>
 
-        <!-- main content start-->
         <div id="page-wrapper" class="row calender widget-shadow">
             <div class="main-page">
                 <div class="forms">
@@ -42,9 +55,7 @@ $row = mysqli_fetch_assoc($ret);
                         <div class="form-body">
                             <form method="post">
                                 <p style="font-size:16px; color:green; text-align:center;">
-                                    <?php if ($msg) {
-                                        echo $msg;
-                                    } ?>
+                                    <?php if ($msg) { echo $msg; } ?>
                                 </p>
 
                                 <div class="form-group">
@@ -67,3 +78,4 @@ $row = mysqli_fetch_assoc($ret);
     </div>
 
     <?php include_once('includes/footer.php'); ?>
+</body>

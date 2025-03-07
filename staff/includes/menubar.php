@@ -47,6 +47,8 @@
               </a>
               <ul class="dropdown-menu drp-mnu">
                 <li> <a href="staff-profile.php"><i class="fa fa-user"></i> Profile</a> </li> 
+                <li> <a href="staff-images.php"><i class="fa fa-file"></i> Services Images</a> </li> 
+                <li> <a href="staff-video.php"><i class="fa fa-file"></i> Services Video</a> </li> 
                 <li> <a href="change-password.php"><i class="fa fa-cog"></i> Password</a> </li> 
                 <li> <a href="../logout.php"><i class="fa fa-sign-out"></i> Logout</a> </li>
               </ul>

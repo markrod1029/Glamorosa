@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => '0e59a6aab51de92a8473309c6f7ed7ed53874795',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '5dbfd459c0e47be918fa1128f1aac862af83c0fb',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => '0e59a6aab51de92a8473309c6f7ed7ed53874795',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '5dbfd459c0e47be918fa1128f1aac862af83c0fb',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -25,6 +25,15 @@
             'reference' => '2f5c94fe7493efc213f643c23b1b1c249d40f47e',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpmailer/phpmailer',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'tinymce/tinymce' => array(
+            'pretty_version' => '7.7.1',
+            'version' => '7.7.1.0',
+            'reference' => 'c92b29a72c467c07799fd09dc9e0add45cf504a1',
+            'type' => 'component',
+            'install_path' => __DIR__ . '/../tinymce/tinymce',
             'aliases' => array(),
             'dev_requirement' => false,
         ),

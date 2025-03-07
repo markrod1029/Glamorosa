@@ -1,19 +1,18 @@
 <section class="footer w3l-footer-29-main">
-    <div class=" py-5">
+    <div class="py-5">
       <div class="container py-lg-4">
         <div class="row footer-top-29">
 
-        <div class="col-lg-5 col-md-6 col-sm-7 footer-list-29 footer-4">
+          <div class="col-lg-5 col-md-6 col-sm-7 footer-list-29 footer-4">
             <h6 class="footer-title-29">Glamorosa</h6>
             <p>Welcome to our GlamBook: Hassle-Free Beauty Appointments for Glamorosa</p>
           </div>
 
-          
           <div class="col-lg-4 col-md-6 col-sm-8 footer-list-29 footer-1">
             <h6 class="footer-title-29">Contact Us</h6>
             <ul>
               <?php
-              $ret = mysqli_query($con, "select * from tblpage where PageType='contactus' ");
+              $ret = mysqli_query($con, "SELECT * FROM tblpage WHERE PageType='contactus' ");
               while ($row = mysqli_fetch_array($ret)) {
               ?>
               <li>
@@ -31,18 +30,17 @@
               <h6 class="footer-title-29">Useful Links</h6>
               <li><a href="index.php">Home</a></li>
               <li><a href="about.php">About</a></li>
-              <li><a href="services.php"> Services</a></li>
+              <li><a href="services.php">Services</a></li>
               <li><a href="contact.php">Contact us</a></li>
             </ul>
           </div>
-         
-          
+
         </div>
       </div>
     </div>
 </section>
 
-
+<!-- Back to top button -->
 <button onclick="topFunction()" id="movetop" title="Go to top">
 	<span class="fa fa-long-arrow-up"></span>
 </button>
@@ -64,8 +62,11 @@ function topFunction() {
 }
 </script>
 
-<script src="assets/public/jquery-3.3.1.min.js"></script>
-<script src="assets/public/bootstrap.min.js"></script>
+<!-- jQuery (Required for Bootstrap 4) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap JS (Latest) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
 $(function () {
@@ -106,7 +107,7 @@ $(function () {
     color: #FFFFFF !important;
 }
 
-w3l-footer-29-main .main-social-footer-29 a {
+.w3l-footer-29-main .main-social-footer-29 a {
     color: #ccc;
     background: #cf7dad !important;
 }

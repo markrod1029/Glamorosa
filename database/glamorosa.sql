@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 02, 2025 at 09:11 AM
+-- Generation Time: Mar 07, 2025 at 05:11 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -33,13 +33,27 @@ CREATE TABLE `tblbook` (
   `UserID` int(10) DEFAULT NULL,
   `AptNumber` int(10) DEFAULT NULL,
   `AptDate` date DEFAULT NULL,
-  `AptTime` time DEFAULT NULL,
+  `AptTimeStart` time DEFAULT NULL,
+  `AptTimeEnd` time DEFAULT NULL,
   `Message` mediumtext DEFAULT NULL,
   `BookingDate` timestamp NULL DEFAULT current_timestamp(),
   `Remark` varchar(250) DEFAULT NULL,
   `Status` varchar(250) DEFAULT NULL,
   `RemarkDate` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tblimages`
+--
+
+CREATE TABLE `tblimages` (
+  `ID` int(11) NOT NULL,
+  `serviceID` int(11) NOT NULL,
+  `image` varchar(200) NOT NULL,
+  `RegDate` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -71,14 +85,6 @@ CREATE TABLE `tblpage` (
   `Timing` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
---
--- Dumping data for table `tblpage`
---
-
-INSERT INTO `tblpage` (`ID`, `PageType`, `PageTitle`, `PageDescription`, `Email`, `MobileNumber`, `UpdationDate`, `Timing`) VALUES
-(1, 'aboutus', ' Glamorosa Make-up Artistry', 'is a seamless and user-friendly appointment platform designed to enhance the convenience of booking professional hair and makeup services in San Carlos City, Pangasinan. With just a few clicks, clients can schedule their beauty sessions, select preferred dates and times, and receive instant confirmations—eliminating the hassle of manual bookings. This system ensures an organized and efficient workflow for makeup artists while providing clients with a stress-free and glamorous experience. Whether for weddings, special events, or everyday glam, Glamorosa makes beauty accessible anytime, anywhere!', NULL, NULL, NULL, ''),
-(2, 'contactus', 'Contact Us', 'Malasiqui-Santa Barbara Rd, 2421 Malasiqui, Philippines, Malasiqui, Philippines', 'info@gmail.com', 9123456789, NULL, '10:30 am to 7:30 pm');
-
 -- --------------------------------------------------------
 
 --
@@ -105,7 +111,7 @@ CREATE TABLE `tbluser` (
   `ID` int(10) NOT NULL,
   `FirstName` varchar(120) DEFAULT NULL,
   `LastName` varchar(250) DEFAULT NULL,
-  `MobileNumber` bigint(10) DEFAULT NULL,
+  `MobileNumber` varchar(20) DEFAULT NULL,
   `Email` varchar(120) DEFAULT NULL,
   `Password` varchar(120) DEFAULT NULL,
   `role` enum('Admin','Staff','Customer') NOT NULL,
@@ -117,7 +123,20 @@ CREATE TABLE `tbluser` (
 --
 
 INSERT INTO `tbluser` (`ID`, `FirstName`, `LastName`, `MobileNumber`, `Email`, `Password`, `role`, `RegDate`) VALUES
-(1, 'Admin', 'Admin', 9123345678, 'admin@gmail.com', 'f3ed11bbdb94fd9ebdefbaf646ab94d3', 'Admin', '2025-02-28');
+(1, 'Admin', 'Admin', '2147483647', 'admin@gmail.com', 'f3ed11bbdb94fd9ebdefbaf646ab94d3', 'Admin', '2025-02-28');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tblvideo`
+--
+
+CREATE TABLE `tblvideo` (
+  `ID` int(11) NOT NULL,
+  `serviceID` int(11) NOT NULL,
+  `video` varchar(200) NOT NULL,
+  `RegDate` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
@@ -127,6 +146,12 @@ INSERT INTO `tbluser` (`ID`, `FirstName`, `LastName`, `MobileNumber`, `Email`, `
 -- Indexes for table `tblbook`
 --
 ALTER TABLE `tblbook`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `tblimages`
+--
+ALTER TABLE `tblimages`
   ADD PRIMARY KEY (`ID`);
 
 --
@@ -156,6 +181,12 @@ ALTER TABLE `tbluser`
   ADD KEY `ID` (`ID`);
 
 --
+-- Indexes for table `tblvideo`
+--
+ALTER TABLE `tblvideo`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -163,13 +194,19 @@ ALTER TABLE `tbluser`
 -- AUTO_INCREMENT for table `tblbook`
 --
 ALTER TABLE `tblbook`
-  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `tblimages`
+--
+ALTER TABLE `tblimages`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tblinvoice`
 --
 ALTER TABLE `tblinvoice`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tblpage`
@@ -181,13 +218,19 @@ ALTER TABLE `tblpage`
 -- AUTO_INCREMENT for table `tblservices`
 --
 ALTER TABLE `tblservices`
-  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `tbluser`
 --
 ALTER TABLE `tbluser`
-  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+
+--
+-- AUTO_INCREMENT for table `tblvideo`
+--
+ALTER TABLE `tblvideo`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

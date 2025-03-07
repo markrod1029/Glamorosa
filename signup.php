@@ -18,7 +18,7 @@ if(isset($_POST['submit'])) {
     
     $fname = mysqli_real_escape_string($con, $_POST['firstname']);
     $lname = mysqli_real_escape_string($con, $_POST['lastname']);
-    $contno = mysqli_real_escape_string($con, $_POST['mobilenumber']);
+    $contno = $_POST['mobilenumber'];
     $email = mysqli_real_escape_string($con, $_POST['email']);
     $role = 'Customer';
     $password = $_POST['password'];
@@ -82,7 +82,7 @@ if(isset($_POST['submit'])) {
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <label>Mobile Number</label>
-                                <input type="text" class="form-control" name="mobilenumber" placeholder="Mobile Number" required pattern="[0-9]+" maxlength="10">
+                                <input type="text" class="form-control" name="mobilenumber" placeholder="Mobile Number" required maxlength="11">
                             </div>
                             <div class="col-md-6">
                                 <label>Email address</label>

@@ -91,6 +91,7 @@ $(document).ready(function () {
        <!-- DataTables JS (kung wala pa sa project mo) -->
 	   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="../vendor/tinymce/tinymce/tinymce.min.js"></script> <!-- Siguraduhin na ito ay tama -->
 
 </body>
 </html>

@@ -1,8 +1,7 @@
 <?php
-    include_once('includes/session.php');
+include_once('includes/session.php');
 include_once('includes/header.php');
 include_once('includes/menubar.php');
-
 
 $service_id = isset($_GET['service_id']) ? intval($_GET['service_id']) : 0;
 
@@ -11,7 +10,7 @@ $query = mysqli_query($con, "SELECT s.ID, s.user_id, s.ServiceName, s.Cost, s.Se
     FROM tblservices s
     LEFT JOIN tbluser u ON s.user_id = u.ID
     WHERE s.ID = '$service_id'");
-    
+
 $service = mysqli_fetch_array($query);
 $service_name = $service ? $service['ServiceName'] : "Unknown Service";
 $fullname = $service ? ($service['FirstName'] . ' ' . $service['LastName']) : "Unknown Name";
@@ -24,18 +23,34 @@ if (isset($_POST['submit'])) {
 
     $uid = $_SESSION['customer'];
     $adate = $_POST['adate'];
-    $atime = $_POST['atime'];
+    $atimeS = $_POST['atimeS'];
+    $atimeE = $_POST['atimeE'];
     $msg = $_POST['message'];
     $aptnumber = mt_rand(100000000, 999999999);
 
-    $query = mysqli_query($con, "INSERT INTO tblbook (UserID, ServiceID, AptNumber, AptDate, AptTime, Message) 
-                                VALUES ('$uid', '$service_id', '$aptnumber', '$adate', '$atime', '$msg')");
+    // **Check for overlapping appointments**
+    $checkQuery = mysqli_query($con, "SELECT * FROM tblbook 
+    WHERE AptDate = '$adate' 
+    AND ServiceID = '$service_id' -- Check only for the same service
+    AND (Status IS NULL OR Status NOT IN ('Approved')) 
+    AND (
+        ('$atimeS' < AptTimeEnd AND '$atimeE' > AptTimeStart) -- Prevents Overlap
+    )");
 
-    if ($query) {
-        $_SESSION['aptno'] = $aptnumber;
-        echo "<script>window.location.href='thank-you.php'</script>";
+
+    if (mysqli_num_rows($checkQuery) > 0) {
+        echo "<script>alert('You already have an appointment during this time. Please select another time slot.');</script>";
     } else {
-        echo '<script>alert("Something Went Wrong. Please try again")</script>';
+        // **Insert New Appointment**
+        $query = mysqli_query($con, "INSERT INTO tblbook (UserID, ServiceID, AptNumber, AptDate, AptTimeStart, AptTimeEnd, Message) 
+            VALUES ('$uid', '$service_id', '$aptnumber', '$adate', '$atimeS', '$atimeE', '$msg')");
+
+        if ($query) {
+            $_SESSION['aptno'] = $aptnumber;
+            echo "<script>window.location.href='thank-you.php'</script>";
+        } else {
+            echo '<script>alert("Something went wrong. Please try again.")</script>';
+        }
     }
 }
 ?>
@@ -54,8 +69,6 @@ if (isset($_POST['submit'])) {
     <div class="contact-sec">
         <div class="container">
             <div class="d-grid contact-view">
-
-                <!-- Contact Details Section -->
                 <div class="cont-details">
                     <?php
                     $ret = mysqli_query($con, "SELECT * FROM tblpage WHERE PageType='contactus'");
@@ -110,7 +123,6 @@ if (isset($_POST['submit'])) {
                         </div>
                     <?php } ?>
                 </div>
-                <!-- End Contact Details Section -->
 
                 <div class="map-content-9 mt-lg-0 mt-4">
                     <form method="post">
@@ -124,15 +136,19 @@ if (isset($_POST['submit'])) {
                             <input type="text" class="form-control" value="<?php echo htmlspecialchars($service_name); ?>" readonly>
                         </div>
 
-
                         <div class="form-group mt-3">
                             <label>Appointment Date</label>
                             <input type="date" class="form-control" name="adate" required>
                         </div>
 
                         <div class="form-group mt-3">
-                            <label>Appointment Time</label>
-                            <input type="time" class="form-control" name="atime" required>
+                            <label>Appointment Time Start</label>
+                            <input type="time" class="form-control" name="atimeS" id="atimeS" required>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label>Appointment Time End</label>
+                            <input type="time" class="form-control" name="atimeE" id="atimeE" readonly>
                         </div>
 
                         <div class="form-group mt-3">
@@ -154,3 +170,16 @@ if (isset($_POST['submit'])) {
 </section>
 
 <?php include_once('includes/footer.php'); ?>
+
+<script>
+    document.getElementById('atimeS').addEventListener('change', function() {
+        let startTime = this.value;
+        if (startTime) {
+            let [hours, minutes] = startTime.split(':').map(Number);
+            hours += 2; // Add 2 hours
+            if (hours >= 24) hours -= 24; // Handle 24-hour format overflow
+            let endTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+            document.getElementById('atimeE').value = endTime;
+        }
+    });
+</script>
