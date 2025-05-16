@@ -28,6 +28,7 @@
                                     <th>Mobile Number</th>
                                     <th>Appointment Date</th>
                                     <th>Appointment Time</th>
+                                    <th>Transaction Code</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -35,7 +36,7 @@
                             <tbody>
                                 <?php
                                 $serviceId = $user['sID'];
-                                $ret = mysqli_query($con, "SELECT tbluser.FirstName,tbluser.LastName,tbluser.Email,tbluser.MobileNumber,tblbook.ID as bid,tblbook.AptNumber,tblbook.AptDate,tblbook.AptTimeStart,tblbook.AptTimeEnd,tblbook.Message,tblbook.BookingDate,tblbook.Status from tblbook join tbluser on tbluser.ID=tblbook.UserID where tblbook.Status='Approved' AND tblbook.ServiceID='$serviceId' ");
+                                $ret = mysqli_query($con, "SELECT tbluser.FirstName,tbluser.LastName,tbluser.Email,tbluser.MobileNumber,tblbook.ID as bid,tblbook.AptNumber,tblbook.AptDate,tblbook.AptTimeStart,tblbook.AptTimeEnd,tblbook.Message,tblbook.TransactionID,tblbook.BookingDate,tblbook.Status from tblbook join tbluser on tbluser.ID=tblbook.UserID where tblbook.Status='Approved' AND tblbook.ServiceID='$serviceId' ");
                                 $cnt = 1;
                                 while ($row = mysqli_fetch_array($ret)) {
 
@@ -54,6 +55,7 @@
                                             ?>
 
                                         </td>
+                                        <th>Transaction Code</th>
 
                                         <?php if ($row['Status'] == "") { ?>
 

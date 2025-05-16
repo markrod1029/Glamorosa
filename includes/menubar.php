@@ -47,7 +47,7 @@ include_once('includes/conn.php');
 <style>
     /* Background color for header */
     .header {
-        background-color: #cf7dad;
+        background-color:rgb(78, 153, 252); /* PRIMARY COLOR */
     }
 
     /* White text for navigation links */

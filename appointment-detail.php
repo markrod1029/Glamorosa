@@ -29,7 +29,7 @@ include_once('includes/menubar.php');
                     <div class="table-content table-responsive cart-table-content m-t-30">
                         <?php
                         $cid = $_GET['aptnumber'];
-                        $ret = mysqli_query($con, "select tbluser.FirstName,tbluser.LastName,tbluser.Email,tbluser.MobileNumber,tblbook.ID as bid,tblbook.AptNumber,tblbook.AptDate,tblbook.AptTime,tblbook.Message,tblbook.BookingDate,tblbook.Remark,tblbook.Status,tblbook.RemarkDate from tblbook join tbluser on tbluser.ID=tblbook.UserID where tblbook.AptNumber='$cid'");
+                        $ret = mysqli_query($con, "select tbluser.FirstName,tbluser.LastName,tbluser.Email,tbluser.MobileNumber,tblbook.ID as bid,tblbook.AptNumber,tblbook.AptDate,tblbook.AptTimeStart,tblbook.AptTimeEnd,tblbook.Message,tblbook.TransactionID,tblbook.BookingDate,tblbook.Remark,tblbook.Status,tblbook.RemarkDate from tblbook join tbluser on tbluser.ID=tblbook.UserID where tblbook.AptNumber='$cid'");
                         $cnt = 1;
                         while ($row = mysqli_fetch_array($ret)) {
 
@@ -59,13 +59,21 @@ include_once('includes/menubar.php');
 
                                 <tr>
                                     <th>Appointment Time</th>
-                                    <td><?php echo $row['AptTime']; ?></td>
+                                    <td><?php
+                                            echo date("h:i A", strtotime($row['AptTimeStart'])) . " - " . date("h:i A", strtotime($row['AptTimeEnd']));
+                                            ?>
+                                            </td>
                                 </tr>
 
 
                                 <tr>
                                     <th>Apply Date</th>
                                     <td><?php echo $row['BookingDate']; ?></td>
+                                </tr>
+
+                                 <tr>
+                                    <th>Transaction Code</th>
+                                    <td><?php echo $row['TransactionID']; ?></td>
                                 </tr>
 
 
@@ -78,6 +86,9 @@ include_once('includes/menubar.php');
 
                                             if ($row['Status'] == "Selected") {
                                                 echo "Selected";
+                                            }
+                                            if ($row['Status'] == "Approved") {
+                                                echo "Approved";
                                             }
 
                                             if ($row['Status'] == "Rejected") {

@@ -9,9 +9,8 @@ include_once('includes/header.php'); ?>
 <section class="w3l-inner-banner-main">
     <div class="about-inner contact ">
         <div class="container">
-            <div class="main-titles-head text-center" >
-                <h3 class="header-name ">
-
+            <div class="main-titles-head text-center">
+                <h3 class="header-name">
                     Our Services
                 </h3>
             </div>

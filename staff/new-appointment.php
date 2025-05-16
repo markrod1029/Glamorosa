@@ -24,6 +24,7 @@
                                     <th>Mobile Number</th>
                                     <th>Appointment Date</th>
                                     <th>Appointment Time</th>
+                                    <th>Transaction Code</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -31,7 +32,7 @@
                             <tbody>
                                 <?php
                                 $serviceId = $user['sID'];
-                                $ret = mysqli_query($con, "select tbluser.FirstName,tbluser.LastName,tbluser.Email,tbluser.MobileNumber,tblbook.ID as bid,tblbook.AptNumber,tblbook.AptDate,tblbook.AptTimeStart,tblbook.AptTimeEnd,tblbook.Message,tblbook.BookingDate,tblbook.Status from tblbook join tbluser on tbluser.ID=tblbook.UserID where tblbook.Status is null AND tblbook.ServiceID='$serviceId'");
+                                $ret = mysqli_query($con, "select tbluser.FirstName,tbluser.LastName,tbluser.Email,tbluser.MobileNumber,tblbook.ID as bid,tblbook.AptNumber,tblbook.AptDate,tblbook.AptTimeStart,tblbook.AptTimeEnd,tblbook.Message,tblbook.TransactionID,tblbook.BookingDate,tblbook.Status from tblbook join tbluser on tbluser.ID=tblbook.UserID where tblbook.Status is null AND tblbook.ServiceID='$serviceId'");
                                 $cnt = 1;
                                 while ($row = mysqli_fetch_array($ret)) {
 
@@ -49,9 +50,7 @@
                                             echo date("h:i A", strtotime($row['AptTimeStart'])) . " - " . date("h:i A", strtotime($row['AptTimeEnd']));
                                             ?>
                                         </td>
-
-
-                                        <?php if ($row['Status'] == "") { ?>
+                                        <td><?php echo $row['TransactionID']; ?></td> <?php if ($row['Status'] == "") { ?>
 
                                             <td class="font-w600"><?php echo "Not Updated Yet"; ?></td>
                                         <?php } else { ?>

@@ -64,7 +64,7 @@ if (isset($_POST['login'])) {
 
 
 <!-- Breadcrumbs -->
-<section class="w3l-inner-banner-main">
+<!-- <section class="w3l-inner-banner-main">
     <div class="about-inner contact">
         <div class="container">
             <div class="main-titles-head text-center">
@@ -72,7 +72,7 @@ if (isset($_POST['login'])) {
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 <!-- Login Section -->
 <section class="w3l-contact-info-main" id="contact">

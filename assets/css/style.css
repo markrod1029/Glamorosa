@@ -75,7 +75,7 @@ button#showLeftPush {
     text-align: center;
     cursor: pointer;
     float: left;
-    color: #6F6F6F;
+    color: #31dcb7;
     -moz-transition: all 0.2s ease-out 0s;
     -webkit-transition: all 0.2s ease-out 0s;
     transition: all 0.2s ease-out 0s;
@@ -84,18 +84,20 @@ button#showLeftPush {
 	outline:none;
 }
 button#showLeftPush:hover {
-    color: #cf7dad;
+    color: #b96a3d;
 }
 /*--push-menu-css--*/
 .cbp-spmenu {
 	position: fixed;
 }
+
+/* CSS SA FUCKING SIDEBAR  */
 .cbp-spmenu-vertical {
-    width: 309px;
+    width: 309px; /* ETO YUNG WIDTH OF SIDEBAR */
     height: 100%;
     top: 76px;
     z-index: 1000;
-    background-color:#cf7dad;
+    background-color:rgb(78, 153, 252) !important;
 	padding: 2em 0;
 }
 .cbp-spmenu-left {
@@ -135,14 +137,16 @@ button#showLeftPush:hover {
 	 margin-bottom: 1em;
 }
 .sidebar ul li a {
-    color: #FFFFFF;
+    color: #FFFFFF !important;
+    font-weight: 700; /* FONT WEIGHT SA SIDEBAR */
     font-size: 1em;
 }
 
+/* SIDEBAR COMPONENTS */
 .nav > li > a:hover, .nav > li > a:focus {
     text-decoration: none;
-    background-color: transparent;
-    color: #F2B33F;
+    background:rgb(255, 234, 112); /* BUTTONS COLOR HOVER */ /*box to ng side bar */
+    color: #cf3434; /* text ng box sa sidebar */
 }
 .sidebar .arrow {
     float: right;
@@ -163,7 +167,7 @@ i.nav_icon {
 span.nav-badge {
     font-size: 12px;
     color: #FFFFFF;
-    background: rgba(255, 255, 255, 0.32);
+    background: rgba(173, 218, 100, 0.836);
     width: 25px;
     height: 25px;
     border-radius: 68%;
@@ -210,7 +214,7 @@ ul.dropdown-menu{
 /*--//side-menu--*/
 /* ----Logo----*/
 .logo {
-    background: #6164C1;
+    background-color:rgb(78, 153, 252) !important; /* PRIMARY COLOR */ /* COLOR LOGO SA ADMIN SIDEBAR  */
     text-align: center;
     float: left;
 }
@@ -248,7 +252,7 @@ ul.dropdown-menu{
     margin: 0;
     z-index: 10;
     font-size: 0.9em;
-    color: #6164C1;
+    color: #c16161;
     padding: 0.5em 1em;
 	border: 2px solid rgba(79, 82, 186, 0.3);
 	-webkit-appearance: none; /* for box shadows to show on iOS */
@@ -423,14 +427,16 @@ ul.dropdown-menu li {
 .user-panel-top li:first-child{
 	margin-left:0;
 }
+
+/* CSS COLOR FOR TEXT */
 .sidebar .nav-second-level li a.active ,.sidebar ul li a.active{
-    color: #8D7984;
+   color: rgb(176, 255, 85) !important; /* CSS COLOR FOR TEXT */
 }
 li.active a i, .act a i {
-    color: #8D7984;
+    color: #31dcb7;
 }
 .custom-nav > li.act > a, .custom-nav > li.act > a:hover, .custom-nav > li.act > a:focus {
-    background-color: #353f4f;
+    background-color: #31DCB7;
     color:#8BC34A;
 }
 .user-panel-top li a{
@@ -439,13 +445,13 @@ li.active a i, .act a i {
 	text-decoration:none;
 }
 .header-right i.fa.fa-envelope{
-	color:#6F6F6F;
+	color:#31DCB7;
 }
 i.fa.fa-bell{
-	color:#6F6F6F;
+	color:#31DCB7;
 }
 i.fa.fa-tasks{
-	color:#6F6F6F;
+	color:#31DCB7;
 }
 .user-panel-top li a:hover{
 	border-color:rgba(101, 124, 153, 0.93);
@@ -834,21 +840,25 @@ ul.dropdown-menu.drp-mnu li {
 .widget.states-mdl {
     margin: 0 2%;
 }
+
+
+
+/* STATISTICS IN THE ADMIN DASHBOARD */
 .stats-left {
     float: left;
     width: 70%;
-    background-color: #4F52BA;
+    background-color: #2b76de;
 	text-align: center;
 	padding: 1em;
 }
 .states-mdl .stats-left {
-    background-color: #585858;
+    background-color: #ff5733 !important;
 }
 .states-mdl .stats-right {
     background-color: rgba(88, 88, 88, 0.88);
 }
 .states-last .stats-left {
-    background-color: #e94e02;
+    background-color: #e94e02 !important;
 }
 .states-last .stats-right {
     background-color: rgba(233, 78, 2, 0.84);

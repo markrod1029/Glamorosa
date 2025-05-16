@@ -1,7 +1,7 @@
-<?php 
+<?php
 session_start();
-include_once('includes/header.php'); 
-include_once('includes/menubar.php'); 
+include_once('includes/header.php');
+include_once('includes/menubar.php');
 
 $errorMsg = "";
 
@@ -10,16 +10,18 @@ if (!isset($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-if(isset($_POST['submit'])) {
+if (isset($_POST['submit'])) {
     // CSRF protection
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         die("Invalid CSRF token");
     }
-    
+
     $fname = mysqli_real_escape_string($con, $_POST['firstname']);
     $lname = mysqli_real_escape_string($con, $_POST['lastname']);
     $contno = $_POST['mobilenumber'];
     $email = mysqli_real_escape_string($con, $_POST['email']);
+    $age = mysqli_real_escape_string($con, $_POST['age']);
+    $gender = mysqli_real_escape_string($con, $_POST['gender']);
     $role = 'Customer';
     $password = $_POST['password'];
     $repeatpassword = $_POST['repeatpassword'];
@@ -28,7 +30,8 @@ if(isset($_POST['submit'])) {
     if ($password !== $repeatpassword) {
         $errorMsg = "Passwords do not match!";
     } elseif (strlen($password) < 8) {
-        $errorMsg = "Password must be at least 8 characters long!";
+        echo "<script>alert('Password must be at least 8 characters long!');</script>";
+        echo "<script>window.location.href='login.php';</script>";
     } else {
         // Secure password hashing
         $hashed_password = md5($password);
@@ -38,21 +41,23 @@ if(isset($_POST['submit'])) {
         mysqli_stmt_bind_param($stmt, "ss", $email, $contno);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
-        
+
         if (mysqli_fetch_array($result)) {
-            $errorMsg = "This email or contact number is already in use!";
+            echo "<script>alert('This email or contact number is already in use!');</script>";
+            echo "<script>window.location.href='login.php';</script>";
         } else {
             // Insert new user
-            $stmt = mysqli_prepare($con, "INSERT INTO tbluser (FirstName, LastName, MobileNumber, Email, Password, role) 
-                                          VALUES (?, ?, ?, ?, ?, ?)");
-            mysqli_stmt_bind_param($stmt, "ssssss", $fname, $lname, $contno, $email, $hashed_password, $role);
+            $stmt = mysqli_prepare($con, "INSERT INTO tbluser (FirstName, LastName, Age, Gender, MobileNumber, Email, Password, role) 
+                                          VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            mysqli_stmt_bind_param($stmt, "ssssssss", $fname, $lname, $age, $gender, $contno, $email, $hashed_password, $role);
             if (mysqli_stmt_execute($stmt)) {
                 $_SESSION['user_email'] = $email;
                 echo "<script>alert('You have successfully registered.');</script>";
                 echo "<script>window.location.href='login.php';</script>";
                 exit();
             } else {
-                $errorMsg = "Something went wrong. Please try again.";
+                echo "<script>alert('Something went wrong. Please try again.');</script>";
+                echo "<script>window.location.href='login.php';</script>";
             }
         }
     }
@@ -79,44 +84,71 @@ if(isset($_POST['submit'])) {
                                 <input type="text" class="form-control" name="lastname" placeholder="Last Name" required>
                             </div>
                         </div>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <label>Mobile Number</label>
-                                <input type="text" class="form-control" name="mobilenumber" placeholder="Mobile Number" required maxlength="11">
-                            </div>
-                            <div class="col-md-6">
-                                <label>Email address</label>
-                                <input type="email" class="form-control" name="email" placeholder="Email address" required>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-6 position-relative">
-                                <label>Password</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
-                                    <span class="input-group-text"><i class="fa fa-eye" id="togglePassword"></i></span>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-6 position-relative">
-                                <label>Confirm password</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" name="repeatpassword" id="repeatpassword" placeholder="Confirm password" required>
-                                    <span class="input-group-text"><i class="fa fa-eye" id="toggleRepeatPassword"></i></span>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-contact w-100" name="submit">Signup</button>
 
-                    </form>
+                        <div>
+                            <label>Age</label>
+                            <div class="input-group">
+                                <select id="ageDropdown" name="age" class="form-control">
+                                    <option value="" disabled selected>Select Age</option>
+                                    <?php for ($i = 1; $i <= 100; $i++): ?>
+                                        <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Gender</label>
+                            <select class="form-control" name="gender" required>
+                                <option value="" disabled selected>Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
                 </div>
+
+
+
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label>Mobile Number</label>
+                        <input type="text" class="form-control" name="mobilenumber" placeholder="Mobile Number" required maxlength="11">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Email address</label>
+                        <input type="email" class="form-control" name="email" placeholder="Email address" required>
+                    </div>
+                </div>
+
+
+                <div class="row mt-3">
+                    <div class="col-md-6 position-relative">
+                        <label>Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+                            <span class="input-group-text"><i class="fa fa-eye" id="togglePassword"></i></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 position-relative">
+                        <label>Confirm password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" name="repeatpassword" id="repeatpassword" placeholder="Confirm password" required>
+                            <span class="input-group-text"><i class="fa fa-eye" id="toggleRepeatPassword"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-contact w-100" name="submit">Signup</button>
+
+                </form>
             </div>
         </div>
+    </div>
     </div>
 </section>
 
 <script>
-    document.getElementById('togglePassword').addEventListener('click', function () {
+    document.getElementById('togglePassword').addEventListener('click', function() {
         var passwordField = document.getElementById('password');
         var icon = this;
         if (passwordField.type === 'password') {
@@ -130,7 +162,7 @@ if(isset($_POST['submit'])) {
         }
     });
 
-    document.getElementById('toggleRepeatPassword').addEventListener('click', function () {
+    document.getElementById('toggleRepeatPassword').addEventListener('click', function() {
         var repeatPasswordField = document.getElementById('repeatpassword');
         var icon = this;
         if (repeatPasswordField.type === 'password') {
@@ -147,16 +179,18 @@ if(isset($_POST['submit'])) {
 
 <style>
     .map-content-9 {
-        max-width: 900px; /* Increase form width */
+        max-width: 900px;
+        /* Increase form width */
         margin: auto;
     }
+
     .map-content-9 input {
-        width: 100%; /* Ensure input fields take full width */
+        width: 100%;
+        /* Ensure input fields take full width */
     }
+
     .col-lg-6.text-center img {
-        max-width: 80%; /* Reduce image width */
+        max-width: 80%;
+        /* Reduce image width */
     }
-
-    
 </style>
-

@@ -2315,13 +2315,14 @@
   overflow: visible;
   clip: auto; }
 
+
+
+/* CODE IN OUR SERVICES  */
 .w3l-inner-banner-main .about-inner {
   padding: 15px 0px;
-  background: #E6D7DE;
+  background: #3dc2ff;
 
 }
-
-
 
 .w3l-inner-banner-main .about-inner {
   padding: 30px 0px 30px;
@@ -2772,7 +2773,7 @@
   .w3l-teams-15 .team-single-main:before {
     width: 100%;
     content: "";
-    background: rgba(0, 0, 0, 0.8);
+    /* background: rgba(0, 0, 0, 0.8); */ 
     position: absolute;
     top: 0px;
     bottom: 0px;
@@ -4238,8 +4239,8 @@
   padding: 15px 30px;
   margin: 20px auto 0;
   color: #fff;
-  background: #f567a6;
-  border-color: #f567a6;
+  background: #524ffd;
+  border-color: #524ffd;
   display: inline-block;
   font-weight: 400;
   text-align: center;
@@ -4253,7 +4254,7 @@
   float: right; }
 
 .w3l-contact-info-main button.btn-contact:hover {
-  background: #5acae3; }
+  background: #4fee7e; }
 
 .w3l-contact-info-main .map-content-9 form textarea {
   resize: none;
@@ -11834,7 +11835,7 @@ h3.color-white {
   width: 40px;
   height: 40px;
   border-width: initial;
-  background: #f567a6;
+  background: rgb(31, 245, 48) !important;   /*  MOVETOP COLOR */
   border-style: none;
   border-color: initial;
   -o-border-image: initial;

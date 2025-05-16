@@ -38,7 +38,7 @@ include_once('includes/menubar.php');
                         <tbody>
                             <?php
                             $userid = $_SESSION['customer'];
-                            $query = mysqli_query($con, "SELECT tbluser.ID as uid, tbluser.FirstName, tbluser.LastName, tbluser.Email, tbluser.MobileNumber, tblbook.ID as bid, tblbook.AptNumber, tblbook.AptDate, tblbook.AptTime, tblbook.Message, tblbook.BookingDate, tblbook.Status FROM tblbook JOIN tbluser ON tbluser.ID=tblbook.UserID WHERE tbluser.ID='$userid'");
+                            $query = mysqli_query($con, "SELECT tbluser.ID as uid, tbluser.FirstName, tbluser.LastName, tbluser.Email, tbluser.MobileNumber, tblbook.ID as bid, tblbook.AptNumber, tblbook.AptDate, tblbook.AptTimeStart, tblbook.AptTimeEnd, tblbook.Message, tblbook.BookingDate, tblbook.Status FROM tblbook JOIN tbluser ON tbluser.ID=tblbook.UserID WHERE tbluser.ID='$userid'");
                             $cnt = 1;
                             $count = mysqli_num_rows($query);
                             if ($count > 0) {
@@ -47,7 +47,9 @@ include_once('includes/menubar.php');
                                         <td><?php echo $cnt; ?></td>
                                         <td><?php echo $row['AptNumber']; ?></td>
                                         <td><?php echo $row['AptDate']; ?></td>
-                                        <td><?php echo $row['AptTime']; ?></td>
+                                        <td> <?php
+                                            echo date("h:i A", strtotime($row['AptTimeStart'])) . " - " . date("h:i A", strtotime($row['AptTimeEnd']));
+                                            ?></td>
                                         <td>
                                             <?php echo $row['Status'] ? $row['Status'] : "Waiting for confirmation"; ?>
                                         </td>

@@ -49,8 +49,8 @@ if (isset($_POST['submit'])) {
                         } else {
                             $cid = mysqli_real_escape_string($con, $_GET['viewid']);
                             $ret = mysqli_query($con, "SELECT 
-                                u.FirstName, u.LastName, u.Email, u.MobileNumber, 
-                                b.ID AS bid, b.AptNumber, b.AptDate, b.AptTime, 
+                                u.FirstName, u.LastName, u.Email, u.MobileNumber, u.Age, u.Gender,
+                                b.ID AS bid, b.AptNumber, b.AptDate, b.AptTimeStart, b.AptTimeEnd, 
                                 b.Message, b.BookingDate, b.Remark, b.Status, b.RemarkDate 
                                 FROM tblbook b 
                                 JOIN tbluser u ON u.ID = b.UserID 
@@ -65,8 +65,13 @@ if (isset($_POST['submit'])) {
                                     <tr><th>Name</th><td><?php echo $row['FirstName'] . ' ' . $row['LastName']; ?></td></tr>
                                     <tr><th>Email</th><td><?php echo $row['Email']; ?></td></tr>
                                     <tr><th>Mobile Number</th><td><?php echo $row['MobileNumber']; ?></td></tr>
+                                    <tr><th>Age</th><td><?php echo $row['Age']; ?></td></tr>
+                                    <tr><th>Gender</th><td><?php echo $row['Gender']; ?></td></tr>
                                     <tr><th>Appointment Date</th><td><?php echo $row['AptDate']; ?></td></tr>
-                                    <tr><th>Appointment Time</th><td><?php echo $row['AptTime']; ?></td></tr>
+                                    <tr>
+                       
+
+                                    <th>Appointment Time</th><td><?php  echo date("h:i A", strtotime($row['AptTimeStart'])) . " - " . date("h:i A", strtotime($row['AptTimeEnd']));?></td></tr>
                                     <tr><th>Apply Date</th><td><?php echo $row['BookingDate']; ?></td></tr>
                                     <tr><th>Status</th>
                                         <td>

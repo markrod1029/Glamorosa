@@ -5,6 +5,7 @@ include_once('includes/header.php'); ?>
 
 <div class="w3l-hero-headers-9 ">
   <div class="css-slider">
+    
     <input id="slide-1" type="radio" name="slides" checked>
     <section class="slide slide-one">
       <div class="container">
@@ -20,8 +21,19 @@ include_once('includes/header.php'); ?>
     <section class="slide slide-two">
       <div class="container">
         <div class="banner-text">
-          <h4>Glamorosa Make-up Artistry </h4>
+          <h4>Glamorosa Positivity </h4>
           <h3>Effortless Appointments <br> for Flawless Transformations!</h3>
+          <a href="services.php" class="btn logo-button top-margin my-3">Get An Appointment</a>
+        </div>
+      </div>
+    </section>
+
+    <input id="slide-3" type="radio" name="slides">
+    <section class="slide slide-three">
+      <div class="container">
+        <div class="banner-text">
+          <h4>Glamorosa Negativity </h4>
+          <h3>Make up is just <br> for low confidence!</h3>
           <a href="services.php" class="btn logo-button top-margin my-3">Get An Appointment</a>
         </div>
       </div>
@@ -30,6 +42,7 @@ include_once('includes/header.php'); ?>
     <header>
       <label for="slide-1" id="slide-label-1"></label>
       <label for="slide-2" id="slide-label-2"></label>
+      <label for="slide-3" id="slide-label-3"></label>
     </header>
   </div>
 </div>
@@ -57,7 +70,7 @@ include_once('includes/header.php'); ?>
   </div>
 </section>
 
-<section class="w3l-teams-15 ">
+<section class="w3l-teams-15" style="background-color: rgb(140, 190, 230) !important;"> <!-- ADD MO TO SA PAG EDIT MO SECOND FOOTER -->
   <div class="team-single-main jst-two-col">
     <div class="container">
       <div class="row">
@@ -79,7 +92,7 @@ include_once('includes/header.php'); ?>
 
 <script>
   let currentIndex = 1;
-  const totalSlides = 2;
+  const totalSlides = 3;
 
   function autoSlide() {
     currentIndex = currentIndex % totalSlides + 1;
@@ -121,6 +134,13 @@ include_once('includes/header.php'); ?>
     background-position: center;
   }
 
+  .w3l-hero-headers-9 .slide-three {
+    background-image: url("assets/images/1.png");
+    background-size: cover;
+    background-position: center;
+  }
+
+
   .css-slider {
     position: relative;
     overflow: hidden;
@@ -135,8 +155,10 @@ include_once('includes/header.php'); ?>
     display: none;
   }
 
+
+  /* APPOINTMENT BUTTON CSS */
   .btn.logo-button {
-    background: #ff4081;
+    background:rgb(122, 142, 255);
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
@@ -144,7 +166,7 @@ include_once('includes/header.php'); ?>
   }
 
   .btn.logo-button:hover {
-    background: #e6005c;
+    background:rgb(31, 245, 48); /* BUTTONS COLOR HOVER */
   }
 
   /* Fade-in animation */

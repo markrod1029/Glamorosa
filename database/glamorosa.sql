@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 07, 2025 at 05:11 PM
+-- Generation Time: May 16, 2025 at 07:06 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -36,11 +36,19 @@ CREATE TABLE `tblbook` (
   `AptTimeStart` time DEFAULT NULL,
   `AptTimeEnd` time DEFAULT NULL,
   `Message` mediumtext DEFAULT NULL,
+  `TransactionID` varchar(30) NOT NULL,
   `BookingDate` timestamp NULL DEFAULT current_timestamp(),
   `Remark` varchar(250) DEFAULT NULL,
   `Status` varchar(250) DEFAULT NULL,
   `RemarkDate` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `tblbook`
+--
+
+INSERT INTO `tblbook` (`ID`, `ServiceID`, `UserID`, `AptNumber`, `AptDate`, `AptTimeStart`, `AptTimeEnd`, `Message`, `TransactionID`, `BookingDate`, `Remark`, `Status`, `RemarkDate`) VALUES
+(23, 39, 51, 592588204, '2025-03-14', '14:06:00', '16:06:00', 'kzjvlh bf jhdkldjfhgdjsfhl gjhsdf sdjkfhgasd', '', '2025-03-10 13:53:37', 'aSDF', 'Approved', '2025-03-10 14:00:24');
 
 -- --------------------------------------------------------
 
@@ -68,6 +76,13 @@ CREATE TABLE `tblinvoice` (
   `PostingDate` date DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+--
+-- Dumping data for table `tblinvoice`
+--
+
+INSERT INTO `tblinvoice` (`id`, `appointmentNo`, `status`, `PostingDate`) VALUES
+(9, 592588204, 'Approved', '2025-03-10');
+
 -- --------------------------------------------------------
 
 --
@@ -85,6 +100,14 @@ CREATE TABLE `tblpage` (
   `Timing` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+--
+-- Dumping data for table `tblpage`
+--
+
+INSERT INTO `tblpage` (`ID`, `PageType`, `PageTitle`, `PageDescription`, `Email`, `MobileNumber`, `UpdationDate`, `Timing`) VALUES
+(1, 'aboutus', 'About Us', '        Our main focus is on quality and hygiene. Our Parlour is well equipped with advanced technology equipments and provides best quality services. Our staff is well trained and experienced, offering advanced services in Skin, Hair and Body Shaping that will provide you with a luxurious experience that leave you feeling relaxed and stress free. The specialities in the parlour are, apart from regular bleachings and Facials, many types of hairstyles, Bridal and cine make-up and different types of Facials &amp; fashion hair colourings.', NULL, NULL, NULL, ''),
+(2, 'contactus', 'Contact Us', '890,Sector 62, Gyan Sarovar, ', 'info@gmail.com', 7896541236, NULL, '10:30 am to 7:30 pm');
+
 -- --------------------------------------------------------
 
 --
@@ -101,6 +124,13 @@ CREATE TABLE `tblservices` (
   `CreationDate` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+--
+-- Dumping data for table `tblservices`
+--
+
+INSERT INTO `tblservices` (`ID`, `user_id`, `ServiceName`, `ServiceDescription`, `Cost`, `Image`, `CreationDate`) VALUES
+(39, 50, 'juan', 'juan', 1499, 'eyelash.png', '2025-03-10 02:17:31');
+
 -- --------------------------------------------------------
 
 --
@@ -111,6 +141,8 @@ CREATE TABLE `tbluser` (
   `ID` int(10) NOT NULL,
   `FirstName` varchar(120) DEFAULT NULL,
   `LastName` varchar(250) DEFAULT NULL,
+  `Age` int(50) DEFAULT NULL,
+  `Gender` varchar(50) DEFAULT NULL,
   `MobileNumber` varchar(20) DEFAULT NULL,
   `Email` varchar(120) DEFAULT NULL,
   `Password` varchar(120) DEFAULT NULL,
@@ -122,8 +154,10 @@ CREATE TABLE `tbluser` (
 -- Dumping data for table `tbluser`
 --
 
-INSERT INTO `tbluser` (`ID`, `FirstName`, `LastName`, `MobileNumber`, `Email`, `Password`, `role`, `RegDate`) VALUES
-(1, 'Admin', 'Admin', '2147483647', 'admin@gmail.com', 'f3ed11bbdb94fd9ebdefbaf646ab94d3', 'Admin', '2025-02-28');
+INSERT INTO `tbluser` (`ID`, `FirstName`, `LastName`, `Age`, `Gender`, `MobileNumber`, `Email`, `Password`, `role`, `RegDate`) VALUES
+(1, 'Admin', 'Admin', NULL, NULL, '2147483647', 'admin@gmail.com', '0192023a7bbd73250516f069df18b500', 'Admin', '2025-02-28'),
+(50, 'Juan', 'Dela Cruz', NULL, NULL, '09123456789', 'juan@gmail.com', 'f5737d25829e95b9c234b7fa06af8736', 'Staff', '2025-03-10'),
+(51, 'Sam', 'Macaranas', 26, 'Male', '0985687894', 'user@gmail.com', 'b5b73fae0d87d8b4e2573105f8fbe7bc', 'Customer', '2025-03-10');
 
 -- --------------------------------------------------------
 
@@ -162,12 +196,6 @@ ALTER TABLE `tblinvoice`
   ADD KEY `id` (`id`);
 
 --
--- Indexes for table `tblpage`
---
-ALTER TABLE `tblpage`
-  ADD PRIMARY KEY (`ID`);
-
---
 -- Indexes for table `tblservices`
 --
 ALTER TABLE `tblservices`
@@ -194,7 +222,7 @@ ALTER TABLE `tblvideo`
 -- AUTO_INCREMENT for table `tblbook`
 --
 ALTER TABLE `tblbook`
-  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `tblimages`
@@ -206,25 +234,19 @@ ALTER TABLE `tblimages`
 -- AUTO_INCREMENT for table `tblinvoice`
 --
 ALTER TABLE `tblinvoice`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT for table `tblpage`
---
-ALTER TABLE `tblpage`
-  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tblservices`
 --
 ALTER TABLE `tblservices`
-  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `tbluser`
 --
 ALTER TABLE `tbluser`
-  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `tblvideo`
