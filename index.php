@@ -1,16 +1,19 @@
 <?php 
 session_start(); // Start the session
-include_once('includes/header.php'); ?>
-<?php include_once('includes/menubar.php'); ?>
+include_once('includes/header.php'); 
+include_once('includes/menubar.php'); 
+?>
 
-<div class="w3l-hero-headers-9 ">
+<div class="w3l-hero-headers-9">
   <div class="css-slider">
+    
     <input id="slide-1" type="radio" name="slides" checked>
     <section class="slide slide-one">
       <div class="container">
         <div class="banner-text">
           <h4>Glamorosa Make-up Artistry</h4>
-          <h3>Unleash Your Inner Glam <br> Beauty, Elegance, Confidence! </h3>
+          <h3>Unleash Your Inner Glam <br> Beauty, Elegance, Confidence!</h3>
+          <p>Experience the transformation with our expert makeup artists who bring out the best in you.</p>
           <a href="services.php" class="btn logo-button top-margin my-3">Get An Appointment</a>
         </div>
       </div>
@@ -20,8 +23,21 @@ include_once('includes/header.php'); ?>
     <section class="slide slide-two">
       <div class="container">
         <div class="banner-text">
-          <h4>Glamorosa Make-up Artistry </h4>
+          <h4>Glamorosa Positivity</h4>
           <h3>Effortless Appointments <br> for Flawless Transformations!</h3>
+          <p>Book your session with ease and let us pamper you with our top-notch services.</p>
+          <a href="services.php" class="btn logo-button top-margin my-3">Get An Appointment</a>
+        </div>
+      </div>
+    </section>
+
+    <input id="slide-3" type="radio" name="slides">
+    <section class="slide slide-three">
+      <div class="container">
+        <div class="banner-text">
+          <h4>Glamorosa Confidence</h4>
+          <h3>Makeup is for Everyone <br> Embrace Your Beauty!</h3>
+          <p>Our services are designed to boost your confidence and highlight your natural beauty.</p>
           <a href="services.php" class="btn logo-button top-margin my-3">Get An Appointment</a>
         </div>
       </div>
@@ -30,6 +46,7 @@ include_once('includes/header.php'); ?>
     <header>
       <label for="slide-1" id="slide-label-1"></label>
       <label for="slide-2" id="slide-label-2"></label>
+      <label for="slide-3" id="slide-label-3"></label>
     </header>
   </div>
 </div>
@@ -57,7 +74,7 @@ include_once('includes/header.php'); ?>
   </div>
 </section>
 
-<section class="w3l-teams-15 ">
+<section class="w3l-teams-15" style="background-color: rgb(140, 190, 230) !important;">
   <div class="team-single-main jst-two-col">
     <div class="container">
       <div class="row">
@@ -70,6 +87,7 @@ include_once('includes/header.php'); ?>
           <p class="para text">
             A seamless and user-friendly appointment platform designed to enhance the convenience of booking professional hair and makeup services in San Carlos City, Pangasinan.
           </p>
+          <p>Our team of experienced artists is dedicated to providing personalized services that cater to your unique style and preferences.</p>
           <a href="services.php" class="btn logo-button top-margin mt-4">Get An Appointment</a>
         </div>
       </div>
@@ -79,7 +97,7 @@ include_once('includes/header.php'); ?>
 
 <script>
   let currentIndex = 1;
-  const totalSlides = 2;
+  const totalSlides = 3;
 
   function autoSlide() {
     currentIndex = currentIndex % totalSlides + 1;
@@ -121,6 +139,12 @@ include_once('includes/header.php'); ?>
     background-position: center;
   }
 
+  .w3l-hero-headers-9 .slide-three {
+    background-image: url("assets/images/3.png"); /* Updated to use a different image */
+    background-size: cover;
+    background-position: center;
+  }
+
   .css-slider {
     position: relative;
     overflow: hidden;
@@ -135,16 +159,18 @@ include_once('includes/header.php'); ?>
     display: none;
   }
 
+  /* APPOINTMENT BUTTON CSS */
   .btn.logo-button {
-    background: #ff4081;
+    background: rgb(122, 142, 255);
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
     text-decoration: none;
+    font-weight: bold;
   }
 
   .btn.logo-button:hover {
-    background: #e6005c;
+    background: rgb(31, 245, 48); /* BUTTONS COLOR HOVER */
   }
 
   /* Fade-in animation */

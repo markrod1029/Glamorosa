@@ -7,6 +7,38 @@
         </li>
 
      
+          <li>
+          <a href="all-appointment.php"><i class="fa fa-event nav_icon"></i>Event<span class="fa arrow"></span></a>
+          <ul class="nav nav-second-level collapse">
+         
+            <li>
+              <a href="events.php">Events List</a>
+            </li>
+            <li>
+              <a href="add-event.php">Add Event</a>
+            </li>
+            
+          </ul>
+          <!-- //nav-second-level -->
+        </li>
+
+          <li>
+          <a href="all-appointment.php"><i class="fa fa-check-square-o nav_icon"></i>Packages<span class="fa arrow"></span></a>
+          <ul class="nav nav-second-level collapse">
+         
+            <li>
+              <a href="packages.php">Packages List</a>
+            </li>
+            <li>
+              <a href="add-package.php">Add Packages</a>
+            </li>
+            
+          </ul>
+          <!-- //nav-second-level -->
+        </li>
+
+
+
         <li>
           <a href="all-appointment.php"><i class="fa fa-check-square-o nav_icon"></i>Appointment<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level collapse">
@@ -36,8 +68,8 @@
           <ul class="nav nav-second-level collapse">
 
             <li><a href="appointment-report.php">Appointment Reports</a></li>
+            <!-- <li><a href="booking-report.php">Service Reports</a></li> -->
           </ul>
-          <!-- //nav-second-level -->
         </li>
 
 

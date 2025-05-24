@@ -59,6 +59,7 @@
           <ul class="nav nav-second-level collapse">
 
             <li><a href="appointment-report.php">Appointment Reports</a></li>
+            <!-- <li><a href="booking-report.php">Service Reports</a></li> -->
           </ul>
           <!-- //nav-second-level -->
         </li>

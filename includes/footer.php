@@ -31,7 +31,6 @@
               <li><a href="index.php">Home</a></li>
               <li><a href="about.php">About</a></li>
               <li><a href="services.php">Services</a></li>
-              <li><a href="contact.php">Contact us</a></li>
             </ul>
           </div>
 
@@ -79,7 +78,7 @@ $(function () {
 <style>
 /* Footer background color */
 .w3l-footer-29-main {
-    background: #8D7984 !important;
+    background: #1facdb !important;
     color: #FFFFFF !important;
 }
 

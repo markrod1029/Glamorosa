@@ -9,10 +9,9 @@ include_once('includes/header.php'); ?>
 <section class="w3l-inner-banner-main">
     <div class="about-inner contact ">
         <div class="container">
-            <div class="main-titles-head text-center" >
-                <h3 class="header-name ">
-
-                    Our Services
+            <div class="main-titles-head text-center">
+                <h3 class="header-name">
+                    Our HMUA Services
                 </h3>
             </div>
         </div>
@@ -32,7 +31,7 @@ include_once('includes/header.php'); ?>
                     <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
                         <div class="card">
 
-                            <a href="service-details.php?id=<?php echo $row['ID']; ?>">
+                            <a href="staff_events.php?id=<?php echo $row['ID']; ?>">
                                 <img src="assets/images/<?php echo htmlspecialchars($row['Image']); ?>"
                                     alt="<?php echo htmlspecialchars($row['ServiceName']); ?>"
                                 class="card-img-top" style="height:200px; width:100%; object-fit:cover;">
@@ -44,7 +43,7 @@ include_once('includes/header.php'); ?>
                                     <p class="card-text text-danger mb-3">
                                         Cost of Service: $<?php echo htmlspecialchars($row['Cost']); ?>
                                     </p>
-                                    <a href="service-details.php?id=<?php echo $row['ID']; ?>" class="btn btn-primary">
+                                    <a href="staff_events.php?id=<?php echo $row['ID']; ?>" class="btn btn-primary">
                                         View Details
                                     </a>
                                 </div>

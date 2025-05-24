@@ -3,51 +3,56 @@ include_once('includes/session.php');
 include_once('includes/header.php');
 include_once('includes/menubar.php');
 
-$service_id = isset($_GET['service_id']) ? intval($_GET['service_id']) : 0;
+$package_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-$query = mysqli_query($con, "SELECT s.ID, s.user_id, s.ServiceName, s.Cost, s.ServiceDescription, s.Image, 
-           u.FirstName, u.LastName, u.MobileNumber, u.Email 
-    FROM tblservices s
+// Fix sa SQL query
+$query = mysqli_query($con, "SELECT 
+    p.*, 
+    u.FirstName, u.LastName, u.MobileNumber, u.Email, u.qrcode 
+    FROM packages p
+    LEFT JOIN events e ON e.id = p.event_id
+    LEFT JOIN tblservices s ON s.id = e.service_id
     LEFT JOIN tbluser u ON s.user_id = u.ID
-    WHERE s.ID = '$service_id'");
+    WHERE p.id = '$package_id'");
 
-$service = mysqli_fetch_array($query);
-$service_name = $service ? $service['ServiceName'] : "Unknown Service";
-$fullname = $service ? ($service['FirstName'] . ' ' . $service['LastName']) : "Unknown Name";
+$package = mysqli_fetch_array($query);
+$package_title = $package['title'] ?? "Unknown Package";
+$price = $package['price'] ?? 0;
+$qrcode = $package['qrcode'] ?? '';
 
-if (isset($_POST['submit'])) {
+$selected_date = $_POST['date'] ?? '';
+$book_time = $_POST['time'] ?? '';
+$transaction_id = $_POST['transaction_id'] ?? '';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['final_booking'])) {
     if (!isset($_SESSION['customer'])) {
-        echo "<script>alert('Please log in to book an appointment.'); window.location.href='login.php';</script>";
+        echo "<script>alert('Please log in to book a package.'); window.location.href='login.php';</script>";
         exit();
     }
 
     $uid = $_SESSION['customer'];
-    $adate = $_POST['adate'];
-    $atimeS = $_POST['atimeS'];
-    $atimeE = $_POST['atimeE'];
-    $msg = $_POST['message'];
+    $adate = $_POST['date'];
+    $atime = $_POST['time'];
+    $txn = $_POST['transaction_id'];
+
+    [$atimeS, $atimeE] = explode(" - ", $atime);
     $aptnumber = mt_rand(100000000, 999999999);
 
-    // **Check for overlapping appointments**
     $checkQuery = mysqli_query($con, "SELECT * FROM tblbook 
-    WHERE AptDate = '$adate' 
-    AND ServiceID = '$service_id' -- Check only for the same service
-    AND (Status IS NULL OR Status NOT IN ('Approved')) 
-    AND (
-        ('$atimeS' < AptTimeEnd AND '$atimeE' > AptTimeStart) -- Prevents Overlap
-    )");
-
+        WHERE AptDate = '$adate' 
+        AND PackageID = '$package_id' 
+        AND (Status IS NULL OR Status NOT IN ('Approved')) 
+        AND ('$atimeS' < AptTimeEnd AND '$atimeE' > AptTimeStart)");
 
     if (mysqli_num_rows($checkQuery) > 0) {
-        echo "<script>alert('You already have an appointment during this time. Please select another time slot.');</script>";
+        echo "<script>alert('This time slot is already booked.');</script>";
     } else {
-        // **Insert New Appointment**
-        $query = mysqli_query($con, "INSERT INTO tblbook (UserID, ServiceID, AptNumber, AptDate, AptTimeStart, AptTimeEnd, Message) 
-            VALUES ('$uid', '$service_id', '$aptnumber', '$adate', '$atimeS', '$atimeE', '$msg')");
+        $insert = mysqli_query($con, "INSERT INTO tblbook (UserID, PackageID, AptNumber, AptDate, AptTimeStart, AptTimeEnd, Message, TransactionID) 
+        VALUES ('$uid', '$package_id', '$aptnumber', '$adate', '$atimeS', '$atimeE', '', '$txn')");
 
-        if ($query) {
+        if ($insert) {
             $_SESSION['aptno'] = $aptnumber;
-            echo "<script>window.location.href='thank-you.php'</script>";
+            echo "<script>window.location.href='thank-you.php';</script>";
         } else {
             echo '<script>alert("Something went wrong. Please try again.")</script>';
         }
@@ -55,131 +60,139 @@ if (isset($_POST['submit'])) {
 }
 ?>
 
-<section class="w3l-inner-banner-main">
-    <div class="about-inner contact">
-        <div class="container">
-            <div class="main-titles-head text-center">
-                <h3 class="header-name">Book Appointment</h3>
+<!-- HTML OUTPUT START -->
+<div class="text-center mt-3">
+    <h3>Package: <?= htmlspecialchars($package_title) ?></h3>
+    <p class="text-muted">Price: ₱<?= number_format($price, 2) ?></p>
+</div>
+
+<h3 class="text-center mt-4">Please select your preferred date and time for booking.</h3>
+
+<div class="container mt-4 mb-5">
+    <form method="POST" class="text-center mb-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <label>Select a Date</label>
+                <input type="text" id="appointmentDate" name="date" class="form-control" placeholder="Choose Date" value="<?= htmlspecialchars($selected_date) ?>">
             </div>
         </div>
-    </div>
-</section>
+        <button type="submit" class="btn btn-primary mt-3">Show Slots</button>
+    </form>
 
-<section class="w3l-contact-info-main" id="contact">
-    <div class="contact-sec">
-        <div class="container">
-            <div class="d-grid contact-view">
-                <div class="cont-details">
-                    <?php
-                    $ret = mysqli_query($con, "SELECT * FROM tblpage WHERE PageType='contactus'");
-                    while ($row = mysqli_fetch_array($ret)) {
-                    ?>
-                        <div class="cont-top">
-                            <div class="cont-left text-center">
-                                <span class="fa fa-phone text-primary"></span>
-                            </div>
-                            <div class="cont-right">
-                                <h6>Call Us</h6>
-                                <p class="para">
-                                    <a href="tel:+<?php echo htmlspecialchars($row['MobileNumber']); ?>">
-                                        +<?php echo htmlspecialchars($row['MobileNumber']); ?>
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
+    <?php if (!empty($selected_date)): ?>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-10">
+                <h5 class="text-center">Selected: <?= htmlspecialchars($selected_date) ?></h5>
+                <table class="table table-bordered text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Time</th>
+                            <th>Available Slots</th>
+                            <th>In Percentage</th>
+                            <th>Select</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $slots = [
+                            "07:00 AM - 08:59 AM",
+                            "09:00 AM - 10:59 AM",
+                            "11:00 AM - 12:59 PM",
+                            "01:00 PM - 02:59 PM",
+                            "03:00 PM - 04:59 PM"
+                        ];
+                        $max_slot_capacity = 1;
 
-                        <div class="cont-top margin-up">
-                            <div class="cont-left text-center">
-                                <span class="fa fa-envelope-o text-primary"></span>
-                            </div>
-                            <div class="cont-right">
-                                <h6>Email Us</h6>
-                                <p class="para">
-                                    <a href="mailto:<?php echo htmlspecialchars($row['Email']); ?>" class="mail">
-                                        <?php echo htmlspecialchars($row['Email']); ?>
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
+                        foreach ($slots as $slot):
+                            [$start, $end] = explode(" - ", $slot);
 
-                        <div class="cont-top margin-up">
-                            <div class="cont-left text-center">
-                                <span class="fa fa-map-marker text-primary"></span>
-                            </div>
-                            <div class="cont-right">
-                                <h6>Address</h6>
-                                <p class="para"><?php echo nl2br(htmlspecialchars($row['PageDescription'])); ?></p>
-                            </div>
-                        </div>
+                            $result = mysqli_query($con, "SELECT COUNT(*) as booked_count 
+                                FROM tblbook 
+                                WHERE AptDate = '$selected_date' 
+                                AND PackageID = '$package_id'
+                                AND (Status IS NULL OR Status NOT IN ('Cancelled', 'Declined'))
+                                AND ('$start' < AptTimeEnd AND '$end' > AptTimeStart)");
 
-                        <div class="cont-top margin-up">
-                            <div class="cont-left text-center">
-                                <span class="fa fa-clock-o text-primary"></span>
-                            </div>
-                            <div class="cont-right">
-                                <h6>Opening Hours</h6>
-                                <p class="para"><?php echo htmlspecialchars($row['Timing']); ?></p>
-                            </div>
-                        </div>
-                    <?php } ?>
-                </div>
-
-                <div class="map-content-9 mt-lg-0 mt-4">
-                    <form method="post">
-                        <div class="form-group">
-                            <label>Full Name</label>
-                            <input type="text" class="form-control" value="<?php echo htmlspecialchars($fullname); ?>" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Service</label>
-                            <input type="text" class="form-control" value="<?php echo htmlspecialchars($service_name); ?>" readonly>
-                        </div>
-
-                        <div class="form-group mt-3">
-                            <label>Appointment Date</label>
-                            <input type="date" class="form-control" name="adate" required>
-                        </div>
-
-                        <div class="form-group mt-3">
-                            <label>Appointment Time Start</label>
-                            <input type="time" class="form-control" name="atimeS" id="atimeS" required>
-                        </div>
-
-                        <div class="form-group mt-3">
-                            <label>Appointment Time End</label>
-                            <input type="time" class="form-control" name="atimeE" id="atimeE" readonly>
-                        </div>
-
-                        <div class="form-group mt-3">
-                            <label>Message</label>
-                            <textarea class="form-control" name="message" placeholder="Message" required></textarea>
-                        </div>
-
-                        <?php if (isset($_SESSION['customer'])) { ?>
-                            <button type="submit" class="btn btn-primary mt-4" name="submit">Make an Appointment</button>
-                        <?php } else { ?>
-                            <a href="login.php" class="btn btn-primary mt-4">Login to Book </a>
-                        <?php } ?>
-                    </form>
-                </div>
-
+                            $row = mysqli_fetch_assoc($result);
+                            $booked = intval($row['booked_count']);
+                            $available = $max_slot_capacity - $booked;
+                            $percentage = round(($available / $max_slot_capacity) * 100) . "%";
+                        ?>
+                            <tr>
+                                <td><?= $slot ?></td>
+                                <td><?= $available ?> / <?= $max_slot_capacity ?></td>
+                                <td><?= $percentage ?></td>
+                                <td>
+                                    <?php if ($available > 0): ?>
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#paymentModal" onclick="selectSlot('<?= $selected_date ?>', '<?= $slot ?>')">Select</button>
+                                    <?php else: ?>
+                                        <button class="btn btn-sm btn-dark" disabled>Book</button>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
+    <?php endif; ?>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Package Booking</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <?php if ($qrcode): ?>
+                    <img src="assets/images/<?= $qrcode ?>" alt="QR Code" width="200" class="mb-3">
+                    <p><?= htmlspecialchars($qrcode) ?></p>
+                <?php endif; ?>
+
+                <?php
+                $tax = $price * 0.10;
+                $total = $price + $tax;
+                ?>
+
+                <div class="mb-2 text-start">
+                    <label class="form-label">Package Price</label>
+                    <input type="text" class="form-control" value="₱<?= number_format($price, 2) ?>" readonly>
+
+                    <label class="form-label mt-2">Tax (10%)</label>
+                    <input type="text" class="form-control" value="₱<?= number_format($tax, 2) ?>" readonly>
+
+                    <label class="form-label mt-2">Total Amount</label>
+                    <input type="text" class="form-control" value="₱<?= number_format($total, 2) ?>" readonly>
+
+                    <input type="hidden" name="date" id="modalDate">
+                    <input type="hidden" name="time" id="modalTime">
+
+                    <label class="form-label mt-3">Transaction ID</label>
+                    <input type="text" name="transaction_id" class="form-control" placeholder="Enter Transaction ID" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" name="final_booking" class="btn btn-primary mx-auto">Confirm Booking</button>
+            </div>
+        </form>
     </div>
-</section>
+</div>
 
-<?php include_once('includes/footer.php'); ?>
-
+<!-- JS: Flatpickr & Bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-    document.getElementById('atimeS').addEventListener('change', function() {
-        let startTime = this.value;
-        if (startTime) {
-            let [hours, minutes] = startTime.split(':').map(Number);
-            hours += 2; // Add 2 hours
-            if (hours >= 24) hours -= 24; // Handle 24-hour format overflow
-            let endTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-            document.getElementById('atimeE').value = endTime;
-        }
+    flatpickr("#appointmentDate", {
+        dateFormat: "Y-m-d",
+        minDate: "today"
     });
+
+    function selectSlot(date, time) {
+        document.getElementById('modalDate').value = date;
+        document.getElementById('modalTime').value = time;
+    }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 24, 2025 at 06:25 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: May 24, 2025 at 12:41 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,66 +24,12 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `events`
---
-
-CREATE TABLE `events` (
-  `id` int(11) NOT NULL,
-  `title` varchar(50) NOT NULL,
-  `description` longtext NOT NULL,
-  `created_at` date NOT NULL,
-  `service_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `events`
---
-
-INSERT INTO `events` (`id`, `title`, `description`, `created_at`, `service_id`) VALUES
-(4, 'Duis dolore id et mi', 'Et voluptas magnam n', '2025-05-24', 39),
-(5, 'Tempora modi velit e', 'Nihil libero qui hic', '2025-05-24', 39),
-(6, 'Nobis debitis proide', 'Anim perspiciatis v', '2025-05-24', 39),
-(7, 'Adipisci ut enim eni', 'Nisi vel cumque hic ', '2025-05-24', 39);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `packages`
---
-
-CREATE TABLE `packages` (
-  `id` int(11) NOT NULL,
-  `title` varchar(50) NOT NULL,
-  `description` varchar(50) NOT NULL,
-  `service` enum('home','walk-in','','') NOT NULL,
-  `price` int(11) NOT NULL,
-  `photo` varchar(100) NOT NULL,
-  `event_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `packages`
---
-
-INSERT INTO `packages` (`id`, `title`, `description`, `service`, `price`, `photo`, `event_id`) VALUES
-(8, 'Esse iste sit enim', 'Voluptatem Delectus', 'home', 820, '5124556.jpg', 7),
-(9, 'Provident ducimus ', 'Rem culpa impedit s', 'walk-in', 532, '7b6d3504-reg-2568-16d19987564.jpg', 4),
-(10, 'Hic odit a et ullamc', 'Id in ut aut commod', 'home', 926, '5124556.jpg', 5),
-(11, 'Optio modi ducimus', 'Ut qui ullamco est ', 'walk-in', 562, '7b6d3504-reg-2568-16d19987564.jpg', 7),
-(12, 'Sed a obcaecati esse', 'Rem ut qui sed aute ', 'walk-in', 84, '7b6d3504-reg-2568-16d19987564.jpg', 7),
-(13, 'Nemo et accusantium ', 'Lorem voluptatibus f', 'home', 328, '5124556.jpg', 7),
-(14, 'At in sed non esse ', 'Corporis obcaecati c', 'walk-in', 961, '7b6d3504-reg-2568-16d19987564.jpg', 5),
-(15, 'Minima et vero vitae', 'Incidunt dolor sunt', 'home', 352, '5124556.jpg', 4);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `tblbook`
 --
 
 CREATE TABLE `tblbook` (
   `ID` int(10) NOT NULL,
-  `PackageID` int(11) NOT NULL,
+  `ServiceID` int(11) NOT NULL,
   `UserID` int(10) DEFAULT NULL,
   `AptNumber` int(10) DEFAULT NULL,
   `AptDate` date DEFAULT NULL,
@@ -101,9 +47,10 @@ CREATE TABLE `tblbook` (
 -- Dumping data for table `tblbook`
 --
 
-INSERT INTO `tblbook` (`ID`, `PackageID`, `UserID`, `AptNumber`, `AptDate`, `AptTimeStart`, `AptTimeEnd`, `Message`, `TransactionID`, `BookingDate`, `Remark`, `Status`, `RemarkDate`) VALUES
-(28, 12, 54, 135576827, '2025-05-24', '07:00:00', '08:59:00', '', '43244323434', '2025-05-24 15:51:08', 'dsadsf', 'Approved', '2025-05-24 16:21:03'),
-(29, 12, 54, 874865884, '2025-05-25', '07:00:00', '08:59:00', '', 'sdsadsd', '2025-05-24 16:20:38', NULL, NULL, NULL);
+INSERT INTO `tblbook` (`ID`, `ServiceID`, `UserID`, `AptNumber`, `AptDate`, `AptTimeStart`, `AptTimeEnd`, `Message`, `TransactionID`, `BookingDate`, `Remark`, `Status`, `RemarkDate`) VALUES
+(23, 39, 51, 592588204, '2025-03-14', '14:06:00', '16:06:00', 'kzjvlh bf jhdkldjfhgdjsfhl gjhsdf sdjkfhgasd', '', '2025-03-10 13:53:37', 'aSDF', 'Approved', '2025-03-10 14:00:24'),
+(26, 39, 53, 824525706, '2025-05-30', '07:00:00', '08:59:00', '', '987985654', '2025-05-17 07:59:53', NULL, NULL, NULL),
+(27, 39, 53, 358516023, '2025-05-20', '07:00:00', '08:59:00', '', '987985654', '2025-05-20 13:15:36', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -136,8 +83,7 @@ CREATE TABLE `tblinvoice` (
 --
 
 INSERT INTO `tblinvoice` (`id`, `appointmentNo`, `status`, `PostingDate`) VALUES
-(9, 592588204, 'Approved', '2025-03-10'),
-(10, 135576827, 'Approved', '2025-05-25');
+(9, 592588204, 'Approved', '2025-03-10');
 
 -- --------------------------------------------------------
 
@@ -236,18 +182,6 @@ CREATE TABLE `tblvideo` (
 --
 
 --
--- Indexes for table `events`
---
-ALTER TABLE `events`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `packages`
---
-ALTER TABLE `packages`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `tblbook`
 --
 ALTER TABLE `tblbook`
@@ -290,22 +224,10 @@ ALTER TABLE `tblvideo`
 --
 
 --
--- AUTO_INCREMENT for table `events`
---
-ALTER TABLE `events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT for table `packages`
---
-ALTER TABLE `packages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
 -- AUTO_INCREMENT for table `tblbook`
 --
 ALTER TABLE `tblbook`
-  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `tblimages`
@@ -317,7 +239,7 @@ ALTER TABLE `tblimages`
 -- AUTO_INCREMENT for table `tblinvoice`
 --
 ALTER TABLE `tblinvoice`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tblservices`

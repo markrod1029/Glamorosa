@@ -29,10 +29,7 @@ include_once('includes/menubar.php');
 
 
                 <h4 class="w3ls_head text-center">Thank you for applying. Your Appointment no is <?php echo $_SESSION['aptno']; ?> </h4>
-
-
             </div>
-
         </div>
     </div>
 </section>
